@@ -1,10 +1,12 @@
 # Simple Launcher
 
 This very simple tool offer a minimal replacement for the deprecated resolution
-dialog Unity used to have. It can be useful for small demo/jam game where you
-don't have the time/resources to build up an option screen.
+dialog Unity used to have.
 
-It allow to display a screen at the game start that let the
+It can be useful for small demo or game jam where you don't have the time or
+resources to build up an option screen.
+
+It simply allows to display a screen at the start of the app that let the
 user choose what resolution they want, if it should be fullscreen and the quality
 level.
 
@@ -16,28 +18,30 @@ level.
 This will automatically switch the game to windowed 1024x768 at first launch,
 displaying the launcher option screen.
 
-If the user save settings, the choosen resolution, fullscreen flag and quality
+If the user saves settings, the chosen resolution, fullscreen flag and quality
 settings are saved to disk in a file in `Application.persistentDataPath`, and
 those settings will be applied next time the game run, bypassing the Launcher
 screen.
 
 By holding down the "submit" input (by default joypad 0, enter, space and return)
 as the game start, it will force re-displaying the screen even if the settings
-where saved.
+were saved before.
 
-Once the Launch button pressed, this will load scene at index 1 that can be your
+Once the Launch button clicked, this will load scene at index 1 that can be your
 game loading scene.
+
+_You can personalize the look of the launcher by modifying the LauncherScene. Note
+that there is a black panel on top of everything you need to disable to easily edit
+the UI. Don't forget to reenable it after as it hide the launcher which otherwise
+flash briefly when loading from file settings_
 
 ### Implementation Note
 
 This used a hacked together autoscrolling toggle for the dropdown (in `ScrollRectItemAutoScroll.cs`)
+which replace the Toggle in the template for both Resolution and Quality dropdown.
 
-The scrolling isn't perfect, but it's a haslty put together hack tp at least
+The scrolling isn't perfect, but it's a hasty put together hack to at least
 allow to use the dropdown with a pad.
-
-There is a black panel on top of the whole scene that get disabled if the scene
-is displayed. This allow to not have a briefly flashing Launcher UI when the game
-start from saved settings and directly jump to the next scene.
 
 ## Known Limitation
 

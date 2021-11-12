@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -18,7 +17,9 @@ public class SimpleLauncher : MonoBehaviour
     
     private void Start()
     {
-        if (!Input.GetButton("Submit") && File.Exists(Application.persistentDataPath + "/LauncherData"))
+        //we skip the editor as it seems it won't register input fast enough to allow keeping submit pressed
+        //In editor you should nearly never go through that screen anyway, just useful to debug/personalize that screen
+        if (!Application.isEditor && !Input.GetButton("Submit") && File.Exists(Application.persistentDataPath + "/LauncherData"))
         {
             using var reader =
                 new BinaryReader(new FileStream(Application.persistentDataPath + "/LauncherData", FileMode.Open));
@@ -37,13 +38,21 @@ public class SimpleLauncher : MonoBehaviour
         Panel.SetActive(false);
         Screen.SetResolution(1024, 768, false);
 
+        //Force select the Resolution dropdown to allow to handle it with pads/keyboard
         EvtSys.SetSelectedGameObject(null);
         EvtSys.SetSelectedGameObject(ResolutionDropdown.gameObject);
 
         List<Dropdown.OptionData> resolutionDropdownOptions = new List<Dropdown.OptionData>();
+        List<Resolution> alreadyAddedResolutions = new List<Resolution>();
         foreach (var resolution in Screen.resolutions)
         {
-            resolutionDropdownOptions.Add(new Dropdown.OptionData(resolution.ToString()));
+            //to simplify the number of offered resolution, we just only add one per w/h ignore refresh rate.
+            if(alreadyAddedResolutions.FindIndex(existingRes => existingRes.width == resolution.width
+                                                                && existingRes.height == resolution.height) != -1)
+                continue;
+            
+            resolutionDropdownOptions.Add(new Dropdown.OptionData($"{resolution.width}x{resolution.height}"));
+            alreadyAddedResolutions.Add(resolution);
         }
         ResolutionDropdown.options = resolutionDropdownOptions;
         ResolutionDropdown.value = ResolutionDropdown.options.Count - 1;
