@@ -11,6 +11,11 @@ public class ScrollRectItemAutoScroll : Toggle
     public override void OnSelect(BaseEventData eventData)
     {
         base.OnSelect(eventData);
+        
+        //if the mouse is being hovered on a gameobject, then we shouldn't autoscroll as the user probably use the mouse
+        //TODO : make that a bit better, as they could hover over something but still be using pad/keyboard.
+        if(EventSystem.current.IsPointerOverGameObject())
+            return;
 
         var dropdown = GetComponentInParent<Dropdown>();
         if (dropdown != null)

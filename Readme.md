@@ -10,6 +10,8 @@ It simply allows to display a screen at the start of the app that let the
 user choose what resolution they want, if it should be fullscreen and the quality
 level.
 
+![Screenshot of the app](screenshot.png)
+
 ## Usage
 
 - Copy the SimpleLauncher folder into your own project
